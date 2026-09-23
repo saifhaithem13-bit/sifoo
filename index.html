@@ -282,27 +282,25 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- COMMENTS SECTION -->
   <section id="contact" class="relative py-24 px-6 section-reveal">
     <div class="max-w-2xl mx-auto text-center">
-      <span class="font-script text-4xl md:text-5xl rose-gold-text">Say Hello</span>
+      <span class="font-script text-4xl md:text-5xl rose-gold-text">Leave a Comment</span>
       <div class="w-24 h-1 bg-gradient-to-r from-transparent via-soft-pink to-transparent mx-auto mt-4 rounded-full"></div>
-      <p class="mt-6 text-rose-gold/70 mb-10">Send a soft message ♡</p>
+      <p class="mt-6 text-rose-gold/70 mb-10">Drop a soft thought ♡ (Comments vanish after 30 mins)</p>
 
-      <form class="space-y-5 text-left" onsubmit="event.preventDefault(); showThankYou();">
-        <input type="text" required placeholder="Your name..." 
-          class="w-full px-5 py-3.5 rounded-2xl glass border border-soft-pink/40 focus:outline-none focus:ring-2 focus:ring-soft-pink/60 transition" />
-        <input type="email" required placeholder="Email..." 
-          class="w-full px-5 py-3.5 rounded-2xl glass border border-soft-pink/40 focus:outline-none focus:ring-2 focus:ring-soft-pink/60 transition" />
-        <textarea rows="4" required placeholder="Your message..." 
+      <!-- Comment Form -->
+      <form id="comment-form" class="space-y-5 text-left mb-12">
+        <textarea id="comment-text" rows="3" required placeholder="Write something sweet..." 
           class="w-full px-5 py-3.5 rounded-2xl glass border border-soft-pink/40 focus:outline-none focus:ring-2 focus:ring-soft-pink/60 transition resize-none"></textarea>
         <button type="submit" class="glow-btn w-full py-4 rounded-full bg-gradient-to-r from-soft-pink to-magenta-soft text-white font-medium text-lg">
-          Send ♡
+          Post Comment 🐾
         </button>
       </form>
 
-      <div id="thank-you" class="hidden mt-8 p-6 rounded-2xl glass border border-soft-pink/50">
-        <p class="font-script text-2xl text-magenta-soft">Thank you! 🐱💕</p>
+      <!-- Comments List Container -->
+      <div id="comments-container" class="space-y-4 text-left max-h-96 overflow-y-auto pr-2">
+        <!-- Dynamic comments will appear here -->
       </div>
     </div>
   </section>
@@ -315,6 +313,7 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script>
     // Mobile menu toggle
     const menuBtn = document.getElementById('menu-btn');
@@ -326,7 +325,6 @@
       menuIcon.textContent = mobileMenu.classList.contains('hidden') ? '♡' : '✕';
     });
 
-    // Close mobile menu on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
@@ -335,10 +333,7 @@
     });
 
     // Scroll reveal observer
-    const observerOptions = {
-      threshold: 0.1
-    };
-
+    const observerOptions = { threshold: 0.1 };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -350,33 +345,89 @@
     document.querySelectorAll('.section-reveal').forEach(section => {
       observer.observe(section);
     });
+  </script>
 
-    // Thank you message function
-    function showThankYou() {
-      const thankYouDiv = document.getElementById('thank-you');
-      thankYouDiv.classList.remove('hidden');
+  <!-- Firebase Integration & Comments Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2F8j-dg2rlRFBIIEvQZM5YXfOtPR7xcU",
+      authDomain: "sifoo-1fb80.firebaseapp.com",
+      projectId: "sifoo-1fb80",
+      storageBucket: "sifoo-1fb80.firebasestorage.app",
+      messagingSenderId: "546184210482",
+      appId: "1:546184210482:web:041eb3d6471653b474b42b",
+      measurementId: "G-V3L1KR6G8M"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Cute Random Names
+    const cuteNames = [
+      "Mimi 🌸", "Kitten 🐱", "Bunny 🐰", "Peach 🍑", 
+      "Starry ✨", "Bubblegum 🎀", "Honey 🍯", "Cloudy ☁️", "Cookie 🍪"
+    ];
+
+    // Handle form submission
+    const commentForm = document.getElementById('comment-form');
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const textInput = document.getElementById('comment-text');
+      const randomName = cuteNames[Math.floor(Math.random() * cuteNames.length)];
+
+      try {
+        await addDoc(collection(db, "comments"), {
+          name: randomName,
+          text: textInput.value,
+          timestamp: serverTimestamp()
+        });
+        textInput.value = '';
+      } catch (error) {
+        console.error("Error adding comment: ", error);
+      }
+    });
+
+    // Fetch and auto-delete comments older than 30 minutes
+    const q = query(collection(db, "comments"));
+    onSnapshot(q, (snapshot) => {
+      const commentsContainer = document.getElementById('comments-container');
+      commentsContainer.innerHTML = '';
+      
+      const now = new Date().getTime();
+
+      snapshot.forEach(async (documentSnap) => {
+        const data = documentSnap.data();
+        const commentTime = data.timestamp ? data.timestamp.toMillis() : now;
+        
+        // Check if more than 30 minutes have passed (30 * 60 * 1000 ms)
+        if (now - commentTime > 30 * 60 * 1000) {
+          await deleteDoc(doc(db, "comments", documentSnap.id));
+          return;
+        }
+
+        // Render comment
+        const commentEl = document.createElement('div');
+        commentEl.className = 'glass p-4 rounded-2xl border border-soft-pink/40 animate-fade-in';
+        commentEl.innerHTML = `
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-medium text-magenta-soft text-sm">${escapeHtml(data.name)}</span>
+            <span class="text-xs text-rose-gold/50">Just now</span>
+          </div>
+          <p class="text-rose-gold/90 text-sm break-words">${escapeHtml(data.text)}</p>
+        `;
+        commentsContainer.appendChild(commentEl);
+      });
+    });
+
+    // Basic XSS protection
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
-
-    // Floating cats background particles
-    const catsContainer = document.getElementById('cats-container');
-    const catEmojis = ['🐱', '🐈', '✨', '💕', '🐾', '🎀'];
-
-    function createFloatingCat() {
-      if (!catsContainer) return;
-      const span = document.createElement('span');
-      span.className = 'cat-particle';
-      span.textContent = catEmojis[Math.floor(Math.random() * catEmojis.length)];
-      span.style.left = Math.random() * 100 + 'vw';
-      span.style.animationDuration = (Math.random() * 5 + 7) + 's';
-      span.style.fontSize = (Math.random() * 1 + 1.2) + 'rem';
-      catsContainer.appendChild(span);
-
-      setTimeout(() => {
-        span.remove();
-      }, 10000);
-    }
-
-    setInterval(createFloatingCat, 1500);
   </script>
 </body>
 </html>

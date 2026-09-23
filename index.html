@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurora ✧ My Soft World</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'baby-pink': '#FFD1DC',
+            'soft-pink': '#FFB6C1',
+            'blush': '#FFC0CB',
+            'magenta-soft': '#E91E63',
+            'rose-gold': '#B76E79',
+            'cream': '#FFF8F0',
+            'pearl': '#FFF5F7',
+          },
+          fontFamily: {
+            script: ['Great Vibes', 'cursive'],
+            display: ['Playfair Display', 'serif'],
+            sans: ['Poppins', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 7s ease-in-out 1s infinite',
+            'float-slow': 'float 8s ease-in-out 2s infinite',
+            'bounce-soft': 'bounceSoft 2.5s ease-in-out infinite',
+            'sparkle': 'sparkle 1.5s ease-in-out infinite',
+            'fade-up': 'fadeUp 1s ease-out forwards',
+            'fade-in': 'fadeIn 1.2s ease-out forwards',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'heart-float': 'heartFloat 8s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            bounceSoft: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            sparkle: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(0.8)' },
+              '50%': { opacity: '1', transform: 'scale(1.2)' },
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(40px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 20px rgba(255, 182, 193, 0.4)' },
+              '50%': { boxShadow: '0 0 40px rgba(233, 30, 99, 0.6)' },
+            },
+            heartFloat: {
+              '0%': { transform: 'translateY(100vh) rotate(0deg)', opacity: '0' },
+              '10%': { opacity: '0.8' },
+              '90%': { opacity: '0.6' },
+              '100%': { transform: 'translateY(-100px) rotate(360deg)', opacity: '0' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: linear-gradient(135deg, #FFF8F0 0%, #FFF5F7 50%, #FFE4EC 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .rose-gold-text {
+      background: linear-gradient(135deg, #B76E79, #E91E63, #FFB6C1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 182, 193, 0.35);
+    }
+    .polaroid {
+      background: white;
+      padding: 12px 12px 40px 12px;
+      box-shadow: 0 10px 30px rgba(183, 110, 121, 0.25), 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .polaroid:hover {
+      transform: rotate(0deg) scale(1.05) !important;
+      box-shadow: 0 20px 50px rgba(233, 30, 99, 0.3), 0 8px 20px rgba(0,0,0,0.1);
+      z-index: 20;
+    }
+    .polaroid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .glow-btn {
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.5), 0 4px 15px rgba(233, 30, 99, 0.2);
+      transition: all 0.3s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 35px rgba(233, 30, 99, 0.7), 0 8px 25px rgba(233, 30, 99, 0.4);
+      transform: translateY(-3px) scale(1.03);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #FFB6C1, #E91E63);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .heart-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      font-size: 1.2rem;
+      animation: heartFloat linear forwards;
+    }
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .section-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .group:hover .gallery-img {
+      transform: scale(1.1);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFF5F7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #FFB6C1, #E91E63);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="font-sans text-rose-gold/90">
+
+  <!-- Floating Hearts Container -->
+  <div id="hearts-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass py-4 px-6 md:px-12 transition-all duration-300" id="navbar">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="#home" class="font-script text-3xl md:text-4xl rose-gold-text tracking-wide">Aurora ✧</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link text-sm font-medium tracking-wide hover:text-magenta-soft transition">Home</a>
+        <a href="#about" class="nav-link text-sm font-medium tracking-wide hover:text-magenta-soft transition">About</a>
+        <a href="#gallery" class="nav-link text-sm font-medium tracking-wide hover:text-magenta-soft transition">Gallery</a>
+        <a href="#contact" class="nav-link text-sm font-medium tracking-wide hover:text-magenta-soft transition">Contact</a>
+      </div>
+      <!-- Mobile menu button -->
+      <button id="menu-btn" class="md:hidden text-2xl text-magenta-soft focus:outline-none">
+        <span id="menu-icon">♡</span>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 flex flex-col gap-3 text-center">
+      <a href="#home" class="py-2 text-sm font-medium hover:text-magenta-soft">Home</a>
+      <a href="#about" class="py-2 text-sm font-medium hover:text-magenta-soft">About</a>
+      <a href="#gallery" class="py-2 text-sm font-medium hover:text-magenta-soft">Gallery</a>
+      <a href="#contact" class="py-2 text-sm font-medium hover:text-magenta-soft">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <!-- Decorative floating elements -->
+    <div class="absolute top-24 left-10 text-4xl animate-float opacity-60">🌸</div>
+    <div class="absolute top-40 right-16 text-3xl animate-float-delayed opacity-50">✨</div>
+    <div class="absolute bottom-32 left-20 text-5xl animate-float-slow opacity-40">💕</div>
+    <div class="absolute top-1/3 right-1/4 text-2xl animate-sparkle">✧</div>
+    <div class="absolute bottom-1/4 right-10 text-3xl animate-bounce-soft opacity-50">🎀</div>
+    <div class="absolute top-1/2 left-8 text-2xl animate-float opacity-40">✿</div>
+
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+      <!-- Animated intro badge -->
+      <div class="inline-block mb-6 opacity-0 animate-fade-in" style="animation-delay: 0.2s">
+        <span class="px-5 py-2 rounded-full glass text-sm tracking-widest uppercase text-magenta-soft font-medium border border-soft-pink/50">
+          Welcome to my little world
+        </span>
+      </div>
+
+      <h1 class="font-script text-6xl sm:text-7xl md:text-8xl lg:text-9xl rose-gold-text leading-tight mb-4 opacity-0 animate-fade-up" style="animation-delay: 0.4s">
+        Hello, I'm Aurora
+      </h1>
+
+      <p class="font-display text-xl md:text-2xl text-rose-gold/80 italic mb-8 opacity-0 animate-fade-up" style="animation-delay: 0.7s">
+        a dreamer of soft aesthetics & pink skies
+      </p>
+
+      <p class="text-base md:text-lg text-rose-gold/70 max-w-xl mx-auto mb-10 leading-relaxed opacity-0 animate-fade-up" style="animation-delay: 1s">
+        Step into a space filled with gentle vibes, pretty things, and a whole lot of heart. 
+        This is my cozy corner of the internet — made with love & sparkles.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-up" style="animation-delay: 1.3s">
+        <a href="#about" class="glow-btn px-8 py-3.5 rounded-full bg-gradient-to-r from-soft-pink to-magenta-soft text-white font-medium tracking-wide shadow-lg">
+          Discover Me ♡
+        </a>
+        <a href="#gallery" class="px-8 py-3.5 rounded-full glass border border-soft-pink/60 text-magenta-soft font-medium tracking-wide hover:bg-white/70 transition-all duration-300">
+          View Gallery
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce-soft opacity-70">
+      <div class="w-6 h-10 rounded-full border-2 border-soft-pink flex items-start justify-center p-1">
+        <div class="w-1.5 h-2.5 bg-magenta-soft rounded-full animate-pulse"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ME ========== -->
+  <section id="about" class="relative py-24 px-6 section-reveal">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="font-script text-4xl md:text-5xl rose-gold-text">About Me</span>
+        <div class="w-24 h-1 bg-gradient-to-r from-transparent via-soft-pink to-transparent mx-auto mt-4 rounded-full"></div>
+        <p class="mt-4 text-rose-gold/70 max-w-lg mx-auto">A little peek into the girl behind the pink screen</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <!-- Polaroid gallery - 3 images -->
+        <div class="relative flex flex-wrap justify-center gap-6 md:gap-4">
+          <!-- Polaroid 1 - image1 -->
+          <div class="polaroid w-44 md:w-48 rotate-[-6deg] hover:rotate-0 cursor-pointer">
+            <div class="aspect-square rounded-sm overflow-hidden">
+              <img src="image1.jpg" alt="Image 1" class="w-full h-full object-cover">
+            </div>
+            <p class="text-center mt-3 font-script text-lg text-rose-gold">soft days</p>
+          </div>
+          <!-- Polaroid 2 - image2 -->
+          <div class="polaroid w-44 md:w-48 rotate-[4deg] hover:rotate-0 cursor-pointer mt-8 md:mt-12">
+            <div class="aspect-square rounded-sm overflow-hidden">
+              <img src="image2.jpg" alt="Image 2" class="w-full h-full object-cover">
+            </div>
+            <p class="text-center mt-3 font-script text-lg text-rose-gold">sparkle soul</p>
+          </div>
+          <!-- Polaroid 3 - image3 -->
+          <div class="polaroid w-44 md:w-48 rotate-[-3deg] hover:rotate-0 cursor-pointer -mt-4 md:mt-4">
+            <div class="aspect-square rounded-sm overflow-hidden">
+              <img src="image3.jpg" alt="Image 3" class="w-full h-full object-cover">
+            </div>
+            <p class="text-center mt-3 font-script text-lg text-rose-gold">pretty things</p>
+          </div>
+        </div>
+
+        <!-- About text -->
+        <div class="space-y-6">
+          <h3 class="font-display text-2xl md:text-3xl text-rose-gold italic">
+            Living in a world of pastels & daydreams
+          </h3>
+          <p class="text-rose-gold/80 leading-relaxed">
+            Hi there! I'm Aurora — a soft-hearted creative who finds joy in the little things: 
+            the way morning light hits pink petals, the smell of fresh notebooks, and the magic of a perfectly curated aesthetic.
+          </p>
+          <p class="text-rose-gold/80 leading-relaxed">
+            I believe life should feel like a gentle hug. Whether I'm journaling under fairy lights, 
+            collecting vintage trinkets, or just romanticizing my daily coffee, I try to sprinkle a bit of wonder everywhere I go.
+          </p>
+          
+          <!-- Cute stats / interests -->
+          <div class="grid grid-cols-2 gap-4 pt-4">
+            <div class="glass rounded-2xl p-4 text-center hover:scale-105 transition-transform duration-300">
+              <div class="text-2xl mb-1">♡</div>
+              <div class="text-sm font-medium text-magenta-soft">Aesthetic Lover</div>
+            </div>
+            <div class="glass rounded-2xl p-4 text-center hover:scale-105 transition-transform duration-300">
+              <div class="text-2xl mb-1">✿</div>
+              <div class="text-sm font-medium text-magenta-soft">Flower Child</div>
+            </div>
+            <div class="glass rounded-2xl p-4 text-center hover:scale-105 transition-transform duration-300">
+              <div class="text-2xl mb-1">✧</div>
+              <div class="text-sm font-medium text-magenta-soft">Daydreamer</div>
+            </div>
+            <div class="glass rounded-2xl p-4 text-center hover:scale-105 transition-transform duration-300">
+              <div class="text-2xl mb-1">🎀</div>
+              <div class="text-sm font-medium text-magenta-soft">Pink Enthusiast</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY / MOOD BOARD ========== -->
+  <section id="gallery" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-baby-pink/20 to-transparent section-reveal">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="font-script text-4xl md:text-5xl rose-gold-text">My Soft Gallery</span>
+        <div class="w-24 h-1 bg-gradient-to-r from-transparent via-soft-pink to-transparent mx-auto mt-4 rounded-full"></div>
+        <p class="mt-4 text-rose-gold/70">Little moments & pretty things that make my heart flutter</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-8">
+        <!-- Card 1 - image1 -->
+        <div class="group relative overflow-hidden rounded-3xl glass aspect-[3/4] cursor-pointer hover:shadow-xl hover:shadow-soft-pink/40 transition-all duration-500">
+          <img src="image1.jpg" alt="Image 1" class="gallery-img">
+          <div class="absolute inset-0 bg-gradient-to-t from-magenta-soft/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+            <p class="text-white font-script text-xl">Blooming</p>
+          </div>
+        </div>
+        <!-- Card 2 - image2 -->
+        <div class="group relative overflow-hidden rounded-3xl glass aspect-[3/4] cursor-pointer hover:shadow-xl hover:shadow-soft-pink/40 transition-all duration-500 mt-8 md:mt-12">
+          <img src="image2.jpg" alt="Image 2" class="gallery-img">
+          <div class="absolute inset-0 bg-gradient-to-t from-magenta-soft/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+            <p class="text-white font-script text-xl">Sweetness</p>
+          </div>
+        </div>
+        <!-- Card 3 - image3 -->
+        <div class="group relative overflow-hidden rounded-3xl glass aspect-[3/4] cursor-pointer hover:shadow-xl hover:shadow-soft-pink/40 transition-all duration-500">
+          <img src="image3.jpg" alt="Image 3" class="gallery-img">
+          <div class="absolute inset-0 bg-gradient-to-t from-magenta-soft/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+            <p class="text-white font-script text-xl">Flutter</p>
+          </div>
+        </div>
+        <!-- Card 4 - image4 -->
+        <div class="group relative overflow-hidden rounded-3xl glass aspect-[3/4] cursor-pointer hover:shadow-xl hover:shadow-soft-pink/40 transition-all duration-500 mt-8 md:mt-0">
+          <img src="image4.jpg" alt="Image 4" class="gallery-img">
+          <div class="absolute inset-0 bg-gradient-to-t from-magenta-soft/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+            <p class="text-white font-script text-xl">Dreamy</p>
+          </div>
+        </div>
+        <!-- Card 5 - image5 -->
+        <div class="group relative overflow-hidden rounded-3xl glass aspect-[3/4] cursor-pointer hover:shadow-xl hover:shadow-soft-pink/40 transition-all duration-500">
+          <img src="image5.jpg" alt="Image 5" class="gallery-img">
+          <div class="absolute inset-0 bg-gradient-to-t from-magenta-soft/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+            <p class="text-white font-script text-xl">Letters</p>
+          </div>
+        </div>
+        <!-- Extra decorative card -->
+        <div class="group relative overflow-hidden rounded-3xl glass aspect-[3/4] cursor-pointer hover:shadow-xl hover:shadow-soft-pink/40 transition-all duration-500 mt-8 md:mt-12 flex items-center justify-center bg-gradient-to-br from-soft-pink/40 to-baby-pink/60">
+          <div class="text-center p-4">
+            <div class="text-5xl mb-3">♡</div>
+            <p class="font-script text-2xl text-magenta-soft">More soon</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== QUOTE / VIBE SECTION ========== -->
+  <section class="py-20 px-6 section-reveal">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="glass rounded-3xl p-10 md:p-14 relative overflow-hidden">
+        <div class="absolute top-4 left-6 text-3xl opacity-40 animate-float">♡</div>
+        <div class="absolute bottom-4 right-6 text-3xl opacity-40 animate-float-delayed">♡</div>
+        <p class="font-script text-3xl md:text-4xl lg:text-5xl rose-gold-text leading-snug mb-6">
+          “Be soft. Do not let the world make you hard.”
+        </p>
+        <p class="text-rose-gold/60 text-sm tracking-widest uppercase">— a little reminder</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="relative py-24 px-6 section-reveal">
+    <div class="max-w-2xl mx-auto text-center">
+      <span class="font-script text-4xl md:text-5xl rose-gold-text">Say Hello</span>
+      <div class="w-24 h-1 bg-gradient-to-r from-transparent via-soft-pink to-transparent mx-auto mt-4 rounded-full"></div>
+      <p class="mt-6 text-rose-gold/70 mb-10">
+        I'd love to hear from you — send a sweet note, share your favorite aesthetic, or just say hi ♡
+      </p>
+
+      <form class="space-y-5 text-left" onsubmit="event.preventDefault(); showThankYou();">
+        <div>
+          <label class="block text-sm font-medium text-rose-gold mb-1.5">Your Name</label>
+          <input type="text" required placeholder="Something pretty..." 

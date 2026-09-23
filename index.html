@@ -316,13 +316,67 @@
   </footer>
 
   <script>
-    // Mobile menu
+    // Mobile menu toggle
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
+    
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
       menuIcon.textContent = mobileMenu.classList.contains('hidden') ? '♡' : '✕';
     });
+
+    // Close mobile menu on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.textContent = '♡';
+      });
+    });
+
+    // Scroll reveal observer
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.section-reveal').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Thank you message function
+    function showThankYou() {
+      const thankYouDiv = document.getElementById('thank-you');
+      thankYouDiv.classList.remove('hidden');
+    }
+
+    // Floating cats background particles
+    const catsContainer = document.getElementById('cats-container');
+    const catEmojis = ['🐱', '🐈', '✨', '💕', '🐾', '🎀'];
+
+    function createFloatingCat() {
+      if (!catsContainer) return;
+      const span = document.createElement('span');
+      span.className = 'cat-particle';
+      span.textContent = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+      span.style.left = Math.random() * 100 + 'vw';
+      span.style.animationDuration = (Math.random() * 5 + 7) + 's';
+      span.style.fontSize = (Math.random() * 1 + 1.2) + 'rem';
+      catsContainer.appendChild(span);
+
+      setTimeout(() => {
+        span.remove();
+      }, 10000);
+    }
+
+    setInterval(createFloatingCat, 1500);
+  </script>
+</body>
+</html>
